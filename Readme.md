@@ -5,9 +5,14 @@
 
 ## Развернуть проект 
 
--Склонироварть репозторий "git clone git@github.com:makasani/shop.git"
--Перейти в папку с проектом и выполнить "composer install"
-
+Склонироварть репозторий 
+``` 
+git clone git@github.com:makasani/shop.git
+```
+Перейти в папку с проектом и выполнить 
+```
+composer install
+```
 
 
 ## Инициализация базы данных
