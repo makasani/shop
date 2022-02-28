@@ -29,3 +29,11 @@ php ./bin/console doctrine:schema:update
 Флаги команды:
 - `--dump_sql` узнать запросы которые будут выполнены;
 - `--force` выполнить запросы
+
+## Маршруты (routes)
+
+Команда выводящая все маршруты (routes) в проекте:
+
+``` 
+symfony console debug:route
+```
