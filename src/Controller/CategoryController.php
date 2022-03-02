@@ -14,7 +14,7 @@ class CategoryController extends AbstractController
     public function category(): Response
     {
         //TODO Вывести информации о категориях в шаблон twig.html
-        return $this->render('main/category.html.twig', [
+        return $this->render('app/category.html.twig', [
             'controller_name' => 'CategoryController',
             'categories' => 'categories array',
         ]);
