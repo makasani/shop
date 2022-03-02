@@ -11,9 +11,10 @@ git clone git@github.com:makasani/shop.git
 ```
 Перейти в папку с проектом и выполнить 
 ```
-composer install
+/bin/bash bin/build-project.sh
 ```
 
+Проект будет доступен по адресу [http://shop]
 
 ## Инициализация базы данных
 
