@@ -23,8 +23,8 @@ Encore
     .addEntry('section-app', './assets/section-app.js')
 
     .copyFiles({
-        from: './assets/images',
-        to: 'images/[path][name].[ext]'
+        from: './assets/img',
+        to: 'img/[path][name].[ext]'
     })
 
     .autoProvidejQuery()
@@ -48,6 +48,7 @@ Encore
      */
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
+    .enableSassLoader()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
