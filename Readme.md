@@ -50,3 +50,24 @@ php ./bin/console doctrine:schema:update
 ``` 
 symfony console debug:route
 ```
+
+## Устранение ошибок
+
+В случае получения ошибки 
+```
+When using date/time fields in EasyAdmin backends, you must install and enable the PHP Intl extension, which is used to format date/time values.
+```
+
+- установить `php-intl` командой 
+
+    ```
+    sudo apt install php-intl
+    ```
+
+- активировать модуль `intl` в `php.ini` командами
+    ```
+    sed "/intl/ s/^/;/" /etc/php/7.4/fpm/php.ini
+    ```
+    ```
+    sudo phpenmod intl
+    ```

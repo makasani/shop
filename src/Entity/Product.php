@@ -113,12 +113,12 @@ class Product
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function getIsActive(): ?bool
     {
         return $this->isActive;
     }
 
-    public function setActive(bool $isActive): self
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
 
