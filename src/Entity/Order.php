@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -20,20 +22,20 @@ class Order
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="order")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class)
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="order")
      */
-    private $products;
+    private $orderProducts;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="integer")
      */
-    private $isDelivered;
+    private $status;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -42,48 +44,55 @@ class Order
     private $createdAt;
 
     /**
-     * @Gedmo\Timestampable(on="create")
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+        $this->orderProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getProducts(): ?Product
+    public function getOrderProducts()
     {
-        return $this->products;
+        return $this->orderProducts;
     }
 
-    public function setProducts(?Product $products): self
+    public function setOrderProducts(?Product $orderProducts): self
     {
-        $this->products = $products;
+        $this->orderProducts = $orderProducts;
 
         return $this;
     }
 
-    public function getIsDelivered(): ?bool
+    public function getStatus(): ?int
     {
-        return $this->isDelivered;
+        return $this->status;
     }
 
-    public function setIsDelivered(bool $isDelivered): self
+    public function setStatus(int $status): self
     {
-        $this->isDelivered = $isDelivered;
+        $this->status = $status;
 
         return $this;
     }
@@ -110,5 +119,10 @@ class Order
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->title ?? '-';
     }
 }

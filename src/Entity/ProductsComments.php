@@ -45,6 +45,12 @@ class ProductsComments
      */
     private $userName;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,12 +80,12 @@ class ProductsComments
         return $this;
     }
 
-    public function getProductId(): ?Product
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function setProductId(Product $product): self
+    public function setProduct(Product $product): self
     {
         $this->product = $product;
 

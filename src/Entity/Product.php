@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -35,7 +37,7 @@ class Product
     private $createdAt;
 
     /**
-     * @Gedmo\Timestampable(on="create")
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
@@ -43,7 +45,7 @@ class Product
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private $isActive = true;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
@@ -59,6 +61,12 @@ class Product
      * @ORM\Column(type="float")
      */
     private $price;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -142,7 +150,7 @@ class Product
         return $this->rate;
     }
 
-    public function setRate(?array $rate): self
+    public function setRate(?int $rate): self
     {
         $this->rate = $rate;
 
@@ -159,5 +167,10 @@ class Product
         $this->price = $price;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return (string)$this->title ?? '-';
     }
 }

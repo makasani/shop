@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,14 +18,18 @@ use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 class Category
 {
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @var string|null
+     *
+     * @ORM\Column(name="title", type="string", length=64)
      */
     private $title;
 
@@ -93,7 +98,19 @@ class Category
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private $isActive = true;
+
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public function __toString()
+    {
+        return $this->title ?? '-';
+    }
 
     public function getId(): ?int
     {
@@ -131,7 +148,7 @@ class Category
 
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new DateTime();
 
         return $this;
     }
@@ -151,6 +168,13 @@ class Category
     public function getRoot(): ?self
     {
         return $this->root;
+    }
+
+    public function setRoot(self $parent = null): ?self
+    {
+        $this->parent = $parent;
+
+        return $this;
     }
 
     public function setParent(self $parent = null): void
