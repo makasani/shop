@@ -39,11 +39,11 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/shop", name="app_products_list")
+     * @Route("/catalog", name="app_products_list")
      */
     public function productsList(): Response
     {
-        return $this->render('app/shop.html.twig', [
+        return $this->render('app/catalog.html.twig', [
             'controller_name' => 'MainController',
         ]);
     }
