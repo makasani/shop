@@ -137,7 +137,7 @@ class Product
         return $this;
     }
 
-    public function getRate(): ?array
+    public function getRate(): ?int
     {
         return $this->rate;
     }
