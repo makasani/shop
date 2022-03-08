@@ -48,3 +48,8 @@ services:
         class: App\Admin\OrderAdmin
         tags:
             - { name: sonata.admin, model_class: App\Entity\Order, controller: ~, manager_type: orm, group: admin, label: Order }
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User }
