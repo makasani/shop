@@ -23,7 +23,9 @@
 <body>
 
     {{ include('app/_embed/_top_infobar.html.twig') }}
-    {{ include('app/_embed/_header.html.twig') }}
+
+    {{ render(controller('App\\Controller\\MainController::getUserInfo')) }}
+
     {{ include('app/_embed/_finder.html.twig') }}
 
     {% block body %}{% endblock %}

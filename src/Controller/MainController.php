@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,6 +63,23 @@ class MainController extends AbstractController
         return $this->render('app/shop-single.html.twig', [
             'product' => $product[0],
             'category' => $category[0],
+        ]);
+    }
+
+
+    /**
+     * @return Response
+     */
+    public function getUserInfo()
+    {
+        #$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        #return new Response($user);
+        return $this->render('app/_embed/_header.html.twig', [
+            'user' => $user,
         ]);
     }
 }

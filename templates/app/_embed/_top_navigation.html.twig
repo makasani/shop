@@ -41,5 +41,14 @@
             <i class="fa fa-fw fa-user text-dark mr-3"></i>
             <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
         </a>
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a class="nav-icon d-none d-lg-inline" href="{{ path('app_login') }}" data-bs-toggle="modal">
+                <i class="fa fa-fw fa-door-closed text-dark mr-2"></i>
+            </a>
+        {% else %}
+            <a class="nav-icon d-none d-lg-inline" href="{{ path('app_logout') }}" data-bs-toggle="modal">
+                <i class="fa fa-fw fa-door-open text-dark mr-2"></i>
+            </a>
+        {% endif %}
     </div>
 </div>
