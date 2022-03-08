@@ -1,7 +1,7 @@
 # Internet Shop
 ## Учебный проект
 
-Использует фреймворк [https://symfony.com] версии 5.4
+Использует фреймворк [https://symfony.com] версии 4.4
 
 ## Развернуть проект 
 
@@ -13,11 +13,15 @@ git clone git@github.com:makasani/shop.git
 ```
 /bin/bash bin/build-project.sh
 ```
-Настроить Webpack установить npm
+Установить composer зависимости
+```
+composer install
+```
+Установить npm зависимости
 ```
 npm install
 ```
-И запустить
+Запустить webpack для компиляции ресурсов
 ```
 npm run build
 ```
