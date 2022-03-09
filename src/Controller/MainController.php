@@ -41,18 +41,6 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/catalog", name="app_products_list")
-     */
-    public function productsList(EntityManagerInterface $entityManager): Response
-    {
-        $products = $entityManager->getRepository("App:Product")->findBy([],[],9);
-
-        return $this->render('app/catalog.html.twig', [
-            'products' => $products,
-        ]);
-    }
-
-    /**
      * @Route("/product/{id}", name="app_product_show", methods={"GET"})
      */
     public function productShow(int $id, EntityManagerInterface $entityManager): Response
