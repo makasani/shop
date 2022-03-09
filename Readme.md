@@ -19,9 +19,9 @@ git clone git@github.com:makasani/shop.git
 /bin/bash bin/build-project.sh
 ```
 
-Установить зависимости и настраиваем webpack
+Или установить зависимости composer, webpack и собрать проект webpack используя консоль
 
-```sh
+```
 composer install
 npm install
 npm run build
@@ -31,7 +31,7 @@ npm run build
 
 ## Настройка подключения к базе данных
 
-Создаём файл .env в который копируем нижеследующую строку с указанием ваших параметров для подключения:
+Создаём файл `.env.local` в который копируем  строку с указанием ваших параметров для подключения:
 
 ``` 
 DATABASE_URL="mysql://user:password@127.0.0.1:3306/dbname?serverVersion=5.7&charset=utf8mb4"
@@ -52,7 +52,7 @@ php ./bin/console doctrine:schema:update
 
 Для того чтобы развернуть данные в БД можно:
 
-Воспользоваться файлом "testdb.sql" и выполнить команду описанную ниже ("db_name" - наименование БД):
+Воспользоваться файлом `testdb.sql` и выполнить команду (где `db_name` - наименование БД):
 
 ``` 
 mysql -u root -p db_name < testdb.sql
@@ -67,6 +67,7 @@ mysql -u root -p db_name < testdb.sql
 ``` 
 php ./bin/console app:add-user
 ```
+При исплльзовании `testdb.sql` пользователь `admin@test.loc` пароль `12345` с правами администратора
 
 ## Маршруты (routes)
 
@@ -75,24 +76,3 @@ php ./bin/console app:add-user
 ``` 
 symfony console debug:route
 ```
-
-## Устранение ошибок
-
-В случае получения ошибки 
-```
-When using date/time fields in EasyAdmin backends, you must install and enable the PHP Intl extension, which is used to format date/time values.
-```
-
-- установить `php-intl` командой 
-
-    ```
-    sudo apt install php-intl
-    ```
-
-- активировать модуль `intl` в `php.ini` командами
-    ```
-    sed "/intl/ s/^/;/" /etc/php/7.4/fpm/php.ini
-    ```
-    ```
-    sudo phpenmod intl
-    ```
