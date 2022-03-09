@@ -36,4 +36,4 @@ composer install
 npm install
 
 # Build webpack
-npn run build
+npm run build
