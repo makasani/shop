@@ -19,17 +19,12 @@ class ProductsComments
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
-
-    /**
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
-     * @ORM\ManyToOne   (targetEntity=Product::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Product::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;
@@ -41,31 +36,24 @@ class ProductsComments
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="productsComments")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $userName;
+    private $user;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $rate;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -104,14 +92,26 @@ class ProductsComments
         return $this;
     }
 
-    public function getUserName(): ?string
+    public function getUser(): ?User
     {
-        return $this->userName;
+        return $this->user;
     }
 
-    public function setUserName(?string $userName): self
+    public function setUser(?User $user): self
     {
-        $this->userName = $userName;
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getRate(): ?int
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?int $rate): self
+    {
+        $this->rate = $rate;
 
         return $this;
     }

@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\ProductsComments;
 use App\Entity\User;
+use App\Form\ProductsCommentsFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -53,19 +56,47 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/product/{id}", name="app_product_show", methods={"GET"})
+     * @Route("/product/{id}", name="app_product_show", methods={"GET", "POST"})
      */
-    public function productShow(int $id, EntityManagerInterface $entityManager): Response
+    public function productShow(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $product = $entityManager->getRepository("App:Product")->findBy(['id' => $id]);
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $productId = $request->attributes->get('id');
+        $product = $entityManager->getRepository("App:Product")->findBy(['id' => $productId]);
         $category = $entityManager->getRepository("App:Category")->findBy(['id' => $product[0]->getCategory()->getId()]);
+
+        if($user === "anon.") {
+            return $this->render('app/shop-single.html.twig', [
+                'product' => $product[0],
+                'category' => $category[0],
+                'productId' => $productId,
+            ]);
+        }
+
+        $productsComments = new ProductsComments();
+
+        $form = $this->createForm(ProductsCommentsFormType::class, $productsComments);
+        $form->handleRequest($request);
+
+        $productsComments->setUser($user);
+        $productsComments->setProduct($product[0]);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($productsComments);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_product_show', ['id' => $productId]);
+        }
 
         return $this->render('app/shop-single.html.twig', [
             'product' => $product[0],
             'category' => $category[0],
+            'productsCommentsForm' => $form->createView(),
+            'productId' => $productId,
         ]);
     }
-
 
     /**
      * @return Response

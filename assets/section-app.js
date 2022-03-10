@@ -9,5 +9,5 @@ require('./js/templatemo');
 require('./js/jquery-1.11.0.min');
 require('./js/jquery-migrate-1.2.1.min');
 require('./js/bootstrap.bundle.min');
-require('./js/custom');
 require('./js/slick.min');
+require('./js/custom');

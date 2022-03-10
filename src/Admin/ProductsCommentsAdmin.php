@@ -16,9 +16,9 @@ final class ProductsCommentsAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('title')
-            ->add('userName')
+            ->add('user')
             ->add('description')
+            ->add('rate')
             ->add('createdAt')
             ;
     }
@@ -27,9 +27,9 @@ final class ProductsCommentsAdmin extends AbstractAdmin
     {
         $list
             ->add('product')
-            ->add('title')
-            ->add('userName')
+            ->add('user')
             ->add('description')
+            ->add('rate')
             ->add('createdAt')
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
@@ -44,18 +44,18 @@ final class ProductsCommentsAdmin extends AbstractAdmin
     {
         $form
             ->add('product')
-            ->add('title')
-            ->add('userName')
+            ->add('user')
             ->add('description')
+            ->add('rate')
             ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('title')
-            ->add('userName')
+            ->add('user')
             ->add('description')
+            ->add('rate')
             ->add('createdAt')
             ;
     }

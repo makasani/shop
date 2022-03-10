@@ -1,0 +1,43 @@
+<!-- Start Contact -->
+<div class="container py-5">
+    <div class="row py-5">
+        <div class="col-md-9 m-auto">
+            {{ form_start(productsCommentsForm) }}
+                <div class="row">
+                    <div class="form-group col-md-6 mb-3">
+    {#                    <label for="inputname">Рейтинг</label>#}
+    {#                    <p class="py-2">#}
+    {#                        <i class="fa fa-star text-warning"></i>#}
+    {#                        <i class="fa fa-star text-warning"></i>#}
+    {#                        <i class="fa fa-star text-warning"></i>#}
+    {#                        <i class="fa fa-star text-warning"></i>#}
+    {#                        <i class="fa fa-star text-secondary"></i>#}
+    {#                    </p>#}
+                        {{ form_label(productsCommentsForm.rate) }}
+                        {{ form_widget(productsCommentsForm.rate) }}
+                        {{ form_errors(productsCommentsForm.rate) }}
+                    </div>
+                    {#                    <div class="form-group col-md-6 mb-3">#}
+                    {#                        <label for="inputemail">Email</label>#}
+                    {#                        <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email">#}
+                    {#                    </div>#}
+                </div>
+                {#                <div class="mb-3">#}
+                {#                    <label for="inputsubject">Subject</label>#}
+                {#                    <input type="text" class="form-control mt-1" id="subject" name="subject" placeholder="Subject">#}
+                {#                </div>#}
+                <div class="mb-3">
+                    {{ form_label(productsCommentsForm.description) }}
+                    {{ form_widget(productsCommentsForm.description) }}
+                    {{ form_errors(productsCommentsForm.description) }}
+                </div>
+                <div class="row">
+                    <div class="col text-end mt-2">
+                        <button type="submit" class="btn btn-success btn-lg px-3">Сохранить мой отзыв</button>
+                    </div>
+                </div>
+            {{ form_end(productsCommentsForm) }}
+        </div>
+    </div>
+</div>
+<!-- End Contact -->

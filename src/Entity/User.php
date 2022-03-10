@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use function MongoDB\BSON\toJSON;
@@ -39,6 +41,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProductsComments::class, mappedBy="user")
+     */
+    private $productsComments;
+
+    public function __construct()
+    {
+        $this->productsComments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -137,6 +149,36 @@ class User implements UserInterface
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductsComments>
+     */
+    public function getProductsComments(): Collection
+    {
+        return $this->productsComments;
+    }
+
+    public function addProductsComment(ProductsComments $productsComment): self
+    {
+        if (!$this->productsComments->contains($productsComment)) {
+            $this->productsComments[] = $productsComment;
+            $productsComment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductsComment(ProductsComments $productsComment): self
+    {
+        if ($this->productsComments->removeElement($productsComment)) {
+            // set the owning side to null (unless already changed)
+            if ($productsComment->getUser() === $this) {
+                $productsComment->setUser(null);
+            }
+        }
 
         return $this;
     }
