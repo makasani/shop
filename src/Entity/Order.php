@@ -3,10 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -22,38 +21,38 @@ class Order
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="order")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OneToMany(targetEntity=OrderItem::class, mappedBy="orderRef", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $user;
+    private $items;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="order")
+     * @ORM\Column(type="string", length=255)
      */
-    private $orderProducts;
+    private $status = self::STATUS_CART;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $status;
-
-    /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
 
+
+
+    /**
+     * Order in progress, not placed yet.
+     *
+     * @var string
+     */
+    const STATUS_CART = 'cart';
+
+
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
-        $this->orderProducts = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -61,36 +60,80 @@ class Order
         return $this->id;
     }
 
-    public function getUser(): ?User
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getItems(): Collection
     {
-        return $this->user;
+        return $this->items;
     }
 
-    public function setUser(User $user): self
+    public function addItem(OrderItem $item): self
     {
-        $this->user = $user;
+        foreach ($this->getItems() as $existingItem) {
+            // Если элемент существует, увеличить количество
+            if ($existingItem->equals($item)) {
+                $existingItem->setQuantity(
+                    $existingItem->getQuantity() + $item->getQuantity()
+                );
+                return $this;
+            }
+        }
+
+        $this->items[] = $item;
+        $item->setOrderRef($this);
 
         return $this;
     }
 
-    public function getOrderProducts()
+    public function removeItem(OrderItem $item): self
     {
-        return $this->orderProducts;
-    }
-
-    public function setOrderProducts(?Product $orderProducts): self
-    {
-        $this->orderProducts = $orderProducts;
+        if ($this->items->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getOrderRef() === $this) {
+                $item->setOrderRef(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getStatus(): ?int
+    /**
+     * Удалить все элементы из заказа.
+     *
+     * @return $this
+     */
+    public function removeItems(): self
+    {
+        foreach ($this->getItems() as $item) {
+            $this->removeItem($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Считает общую сумму заказа.
+     *
+     * @return float
+     */
+    public function getTotal(): float
+    {
+        $total = 0;
+
+        foreach ($this->getItems() as $item) {
+            $total += $item->getTotal();
+        }
+
+        return $total;
+    }
+
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -119,10 +162,5 @@ class Order
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->title ?? '-';
     }
 }

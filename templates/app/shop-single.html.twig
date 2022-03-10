@@ -113,61 +113,23 @@
 
                             <h6>Описание:</h6>
                             <p>{{ product.description }}</p>
-{#                            <ul class="list-inline">#}
-{#                                <li class="list-inline-item">#}
-{#                                    <h6>Avaliable Color :</h6>#}
-{#                                </li>#}
-{#                                <li class="list-inline-item">#}
-{#                                    <p class="text-muted"><strong>White / Black</strong></p>#}
-{#                                </li>#}
-{#                            </ul>#}
 
-{#                            <h6>Specification:</h6>#}
-{#                            <ul class="list-unstyled pb-3">#}
-{#                                <li>Lorem ipsum dolor sit</li>#}
-{#                                <li>Amet, consectetur</li>#}
-{#                                <li>Adipiscing elit,set</li>#}
-{#                                <li>Duis aute irure</li>#}
-{#                                <li>Ut enim ad minim</li>#}
-{#                                <li>Dolore magna aliqua</li>#}
-{#                                <li>Excepteur sint</li>#}
-{#                            </ul>#}
+                            {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-light'}}) }}
+                            <div class="form-group">
+                                {{ form_label(form.quantity, 'Количество') }}
+                                {{ form_widget(form.quantity, {
+                                    'attr': {
+                                        'class': 'form-control ' ~ (form.quantity.vars.valid ? '' : 'is-invalid')
+                                    }
+                                }) }}
+                                <div class="invalid-feedback">
+                                    {{ form_errors(form.quantity) }}
+                                </div>
+                            </div>
+                            {{ form_widget(form.add, {'attr': {'class': 'mt-4 btn btn-success '}}) }}
 
-                            <form action="" method="GET">
-                                <input type="hidden" name="product-title" value="Activewear">
-                                <div class="row">
-{#                                    <div class="col-auto">#}
-{#                                        <ul class="list-inline pb-3">#}
-{#                                            <li class="list-inline-item">Size :#}
-{#                                                <input type="hidden" name="product-size" id="product-size" value="S">#}
-{#                                            </li>#}
-{#                                            <li class="list-inline-item"><span class="btn btn-success btn-size">S</span></li>#}
-{#                                            <li class="list-inline-item"><span class="btn btn-success btn-size">M</span></li>#}
-{#                                            <li class="list-inline-item"><span class="btn btn-success btn-size">L</span></li>#}
-{#                                            <li class="list-inline-item"><span class="btn btn-success btn-size">XL</span></li>#}
-{#                                        </ul>#}
-{#                                    </div>#}
-                                    <div class="col-auto">
-                                        <ul class="list-inline pb-3">
-                                            <li class="list-inline-item text-right">
-                                                Количество
-                                                <input type="hidden" name="product-quanity" id="product-quanity" value="1">
-                                            </li>
-                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
-                                            <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
-                                            <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="row pb-3">
-                                    <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="buy">Купить</button>
-                                    </div>
-                                    <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard">Добавить в корзину</button>
-                                    </div>
-                                </div>
-                            </form>
+                            {{ form_end(form) }}
+
 
                         </div>
                     </div>
