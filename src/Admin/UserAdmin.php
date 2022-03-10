@@ -43,15 +43,17 @@ final class UserAdmin extends AbstractAdmin
 
     protected function configureFormFields(FormMapper $form): void
     {
-
-        $roles = $this->getSubject()->getRoles();
-
         $form
             ->add('name')
             ->add('email')
             ->add('roles', ChoiceType::class, [
-                'choices' => $roles,
-                'multiple' => true
+                'choices' =>
+                    [
+                        "ROLE_ADMIN" => "ROLE_ADMIN",
+                        "ROLE_USER" => "ROLE_USER",
+                    ],
+                'multiple' => true,
+                'expanded' => true,
                 ])
             ->add('password')
             ;
