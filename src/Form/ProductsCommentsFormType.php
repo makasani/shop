@@ -22,7 +22,6 @@ class ProductsCommentsFormType extends AbstractType
                 'label' => 'Рейтинг от 0 до 5',
                 'attr' => [
                     'class' => 'form-control mt-1',
-                    'autofocus' => 'autofocus',
                 ],
             ])
             ->add('description', TextareaType::class, [
@@ -31,7 +30,6 @@ class ProductsCommentsFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control mt-1',
                     'rows' => '8',
-                    'autofocus' => 'autofocus',
                 ],
                 'constraints' => [
                     new NotBlank([
