@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 08, 2022 at 09:39 PM
+-- Generation Time: Mar 10, 2022 at 03:17 AM
 -- Server version: 8.0.28-0ubuntu0.21.10.3
 -- PHP Version: 7.4.28
 
@@ -31,7 +31,7 @@ CREATE TABLE `categories` (
   `id` int NOT NULL,
   `tree_root` int DEFAULT NULL,
   `parent_id` int DEFAULT NULL,
-  `title` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `lft` int NOT NULL,
@@ -81,8 +81,8 @@ CREATE TABLE `order` (
 CREATE TABLE `product` (
   `id` int NOT NULL,
   `category_id` int DEFAULT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   `is_active` tinyint(1) NOT NULL,
@@ -129,11 +129,18 @@ INSERT INTO `product` (`id`, `category_id`, `title`, `description`, `created_at`
 CREATE TABLE `products_comments` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
-  `user_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `user_id` int NOT NULL,
+  `rate` smallint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products_comments`
+--
+
+INSERT INTO `products_comments` (`id`, `product_id`, `description`, `created_at`, `user_id`, `rate`) VALUES
+(1, 1, 'Комментарий несущий в себе глубокий смысл)', '2022-03-10 03:15:09', 1, 5);
 
 -- --------------------------------------------------------
 
@@ -143,10 +150,10 @@ CREATE TABLE `products_comments` (
 
 CREATE TABLE `user` (
   `id` int NOT NULL,
-  `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(180) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `roles` json NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -188,7 +195,8 @@ ALTER TABLE `product`
 --
 ALTER TABLE `products_comments`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_4A9F86994584665A` (`product_id`);
+  ADD KEY `IDX_4A9F86994584665A` (`product_id`),
+  ADD KEY `IDX_4A9F8699A76ED395` (`user_id`);
 
 --
 -- Indexes for table `user`
@@ -223,7 +231,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `products_comments`
 --
 ALTER TABLE `products_comments`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -259,7 +267,8 @@ ALTER TABLE `product`
 -- Constraints for table `products_comments`
 --
 ALTER TABLE `products_comments`
-  ADD CONSTRAINT `FK_4A9F86994584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+  ADD CONSTRAINT `FK_4A9F86994584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FK_4A9F8699A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
