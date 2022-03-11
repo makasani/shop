@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -68,7 +69,7 @@ class Product
      */
     private $productImages;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
@@ -179,6 +180,13 @@ class Product
     public function __toString()
     {
         return (string)$this->title ?? '-';
+    }
+
+    public function getProductImagePath(EntityManagerInterface $entityManager): ?string
+    {
+        $imagePath = $entityManager->getRepository("App:ProductImage")->findBy(["product" => $this->getId()],[],1);
+
+        return $imagePath[0]->getFilepath();
     }
 
     /**

@@ -50,6 +50,11 @@ class MainController extends AbstractController
     {
         $products = $entityManager->getRepository("App:Product")->findBy([],[],9);
 
+        //TODO Страшно, ну а что поделаешь... переделаю
+        foreach ($products as $product) {
+            $product->imagepath = $product->getProductImagePath($entityManager);
+        }
+
         return $this->render('app/catalog.html.twig', [
             'products' => $products,
         ]);
@@ -65,6 +70,10 @@ class MainController extends AbstractController
         $productId = $request->attributes->get('id');
         $product = $entityManager->getRepository("App:Product")->findBy(['id' => $productId]);
         $category = $entityManager->getRepository("App:Category")->findBy(['id' => $product[0]->getCategory()->getId()]);
+
+        //TODO Страшно, ну а что поделаешь... переделаю
+        $product[0]->imagepath = $product[0]->getProductImagePath($entityManager);
+
 
         if($user === "anon.") {
             return $this->render('app/shop-single.html.twig', [
