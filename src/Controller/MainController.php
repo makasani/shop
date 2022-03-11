@@ -122,4 +122,22 @@ class MainController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    /**
+     * @return Response
+     */
+    public function getRandomProduct(int $limit, EntityManagerInterface $entityManager)
+    {
+        $products = $entityManager->getRepository("App:Product")->getRandomProducts(6);
+
+        //TODO Страшно, ну а что поделаешь... переделаю
+        foreach ($products as $product) {
+            $product->imagepath = $product->getProductImagePath($entityManager);
+        }
+
+        #return new Response($user);
+        return $this->render('app/_embed/_most_likely_products_slider.html.twig', [
+            'products' => $products,
+        ]);
+    }
 }

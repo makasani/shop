@@ -6,6 +6,7 @@ use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -43,6 +44,27 @@ class ProductRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    /**
+     * @param int $limit
+     * @return int|mixed|string
+     */
+    public function getRandomProducts(int $limit)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $sql = "SELECT * FROM product as p ORDER BY RAND() LIMIT " . $limit;
+        $resultSetMapping = new ResultSetMapping();
+
+        $resultSetMapping->addEntityResult('App:Product', 'p');
+        $resultSetMapping->addFieldResult('p','id','id');
+        $resultSetMapping->addFieldResult('p','title','title');
+        $resultSetMapping->addFieldResult('p','description','description');
+        $resultSetMapping->addFieldResult('p','rate','rate');
+        $resultSetMapping->addFieldResult('p','price','price');
+
+        return $entityManager->createNativeQuery($sql,$resultSetMapping)->getResult();
     }
 
     // /**
