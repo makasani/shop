@@ -111,11 +111,9 @@ final class ProductAdmin extends AbstractAdmin
             $productImage->setProduct($this->getForm()->getData());
             $productImage->setFilepath($newFilename);
 
-            $productId = $productImage->getProduct()->getId();
-
             try {
                 $fileInfo->move(
-                    'product-images/'.$productId.'/',
+                    'product-images/',
                     $newFilename
                 );
                 $this->getModelManager()->update($productImage);

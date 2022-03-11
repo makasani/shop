@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 10, 2022 at 03:17 AM
+-- Generation Time: Mar 11, 2022 at 03:45 AM
 -- Server version: 8.0.28-0ubuntu0.21.10.3
 -- PHP Version: 7.4.28
 
@@ -145,6 +145,48 @@ INSERT INTO `products_comments` (`id`, `product_id`, `description`, `created_at`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `product_image`
+--
+
+CREATE TABLE `product_image` (
+  `id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `filepath` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `product_image`
+--
+
+INSERT INTO `product_image` (`id`, `product_id`, `filepath`) VALUES
+(1, 1, 'product-622a9996691ef.jpeg'),
+(2, 2, 'product-622a99dc814b2.jpeg'),
+(3, 3, 'product-622a99e8ad4ab.jpeg'),
+(4, 4, 'product-622a99fb3886f.jpeg'),
+(5, 5, 'product-622a9a06c3695.jpeg'),
+(6, 6, 'product-622a9a11cfd80.jpeg'),
+(7, 7, 'product-622a9a21f30e8.jpeg'),
+(8, 8, 'product-622a9a303947f.jpeg'),
+(9, 9, 'product-622a9a4695847.jpeg'),
+(10, 10, 'product-622a9a649d139.jpeg'),
+(11, 11, 'product-622a9a71a4d5c.jpeg'),
+(12, 12, 'product-622a9a82ab9d8.jpeg'),
+(13, 13, 'product-622a9a9851965.jpeg'),
+(14, 14, 'product-622a9aa907e60.jpeg'),
+(15, 15, 'product-622a9abb27759.jpeg'),
+(16, 16, 'product-622a9ac9672b5.jpeg'),
+(17, 17, 'product-622a9ad78edf7.jpeg'),
+(18, 18, 'product-622a9ae6adbe1.jpeg'),
+(19, 19, 'product-622a9b0392b8d.jpeg'),
+(20, 20, 'product-622a9b114cbf7.jpeg'),
+(21, 21, 'product-622a9b20ee8c4.jpeg'),
+(22, 22, 'product-622a9b3e6aaa8.jpeg'),
+(23, 23, 'product-622a9b4949d6b.jpeg'),
+(24, 24, 'product-622a9b58d76e8.jpeg');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -199,6 +241,13 @@ ALTER TABLE `products_comments`
   ADD KEY `IDX_4A9F8699A76ED395` (`user_id`);
 
 --
+-- Indexes for table `product_image`
+--
+ALTER TABLE `product_image`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_64617F034584665A` (`product_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -232,6 +281,12 @@ ALTER TABLE `product`
 --
 ALTER TABLE `products_comments`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `product_image`
+--
+ALTER TABLE `product_image`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -269,6 +324,12 @@ ALTER TABLE `product`
 ALTER TABLE `products_comments`
   ADD CONSTRAINT `FK_4A9F86994584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
   ADD CONSTRAINT `FK_4A9F8699A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `product_image`
+--
+ALTER TABLE `product_image`
+  ADD CONSTRAINT `FK_64617F034584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
