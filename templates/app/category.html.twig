@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Internet magazine - about page{% endblock %}
+{% block page_keywords %}Some good things{% endblock %}
+{% block page_description %}Your wishes are here!{% endblock %}
+
+{% block body %}
+
+    <!-- Start Content -->
+    <div class="container py-5">
+        <div class="row">
+
+            {{ include('app/_embed/_categories_sidebar.html.twig') }}
+
+            <div class="col-lg-9">
+                {{ include('app/_embed/_categories_topbar.html.twig') }}
+
+                <div class="row">
+                    {% for category in categories %}
+                        {{ include('app/_embed/category-card.html.twig') }}
+                    {% else %}
+                        {# <h1 class="text-center">Данных временно нет, загрузить их вы можете из "testdb.sql"</h1> #}
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    {% if products is defined %}
+                        {% for product in products %}
+                            {{ include('app/_embed/product-card.html.twig') }}
+                        {% else %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+{#                {{ include('app/_embed/_paginator.html.twig') }}#}
+            </div>
+        </div>
+    </div>
+    <!-- End Content -->
+
+    {# {{ include('app/_embed/_brends.html.twig') }} #}
+
+{% endblock %}

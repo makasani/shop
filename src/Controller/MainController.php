@@ -44,23 +44,6 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/catalog", name="app_products_list")
-     */
-    public function productsList(EntityManagerInterface $entityManager): Response
-    {
-        $products = $entityManager->getRepository("App:Product")->findBy([],[],9);
-
-        //TODO Страшно, ну а что поделаешь... переделаю
-        foreach ($products as $product) {
-            $product->imagepath = $product->getProductImagePath($entityManager);
-        }
-
-        return $this->render('app/catalog.html.twig', [
-            'products' => $products,
-        ]);
-    }
-
-    /**
      * @Route("/product/{id}", name="app_product_show", methods={"GET", "POST"})
      */
     public function productShow(EntityManagerInterface $entityManager, Request $request): Response
@@ -75,7 +58,7 @@ class MainController extends AbstractController
         $product[0]->imagepath = $product[0]->getProductImagePath($entityManager);
 
 
-        if($user === "anon.") {
+        if ($user === "anon.") {
             return $this->render('app/shop-single.html.twig', [
                 'product' => $product[0],
                 'category' => $category[0],
