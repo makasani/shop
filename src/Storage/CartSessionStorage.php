@@ -23,7 +23,7 @@ class CartSessionStorage
     /**
      * @var SessionInterface
      */
-    private $requestStack;
+    private $interface;
 
     /**
      * The cart repository.
@@ -40,12 +40,12 @@ class CartSessionStorage
     /**
      * CartSessionStorage constructor.
      *
-     * @param SessionInterface $requestStack
+     * @param SessionInterface $interface
      * @param OrderRepository $cartRepository
      */
-    public function __construct(SessionInterface $requestStack, OrderRepository $cartRepository)
+    public function __construct(SessionInterface $interface, OrderRepository $cartRepository)
     {
-        $this->requestStack = $requestStack;
+        $this->interface = $interface;
         $this->cartRepository = $cartRepository;
     }
 
@@ -69,7 +69,7 @@ class CartSessionStorage
      */
     public function setCart(Order $cart): void
     {
-        $this->requestStack->set(self::CART_KEY_NAME, $cart->getId());
+        $this->interface->set(self::CART_KEY_NAME, $cart->getId());
     }
 
     /**
@@ -77,9 +77,9 @@ class CartSessionStorage
      *
      * @return int|null
      */
-    private function getCartId(): ?int
+    public function getCartId(): ?int
     {
-        return $this->requestStack->get(self::CART_KEY_NAME);
+        return $this->interface->get(self::CART_KEY_NAME);
 
     }
 }

@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
-use App\Form\AddToCartType;
 use App\Manager\CartManager;
 use App\Form\CartType;
-use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,14 +11,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class CartController
- * @package App\Controller
  */
 class CartController extends AbstractController
 {
     /**
      * @Route("/cart", name="cart")
      */
-    public function index(CartManager $cartManager, Request $request): Response
+    public function index(CartManager $cartManager, Request $request ): Response
     {
         $cart = $cartManager->getCurrentCart();
 
