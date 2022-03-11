@@ -27,6 +27,14 @@ SET time_zone = "+00:00";
 -- Table structure for table `categories`
 --
 
+DROP TABLE IF EXISTS `product_image`;
+DROP TABLE IF EXISTS `products_comments`;
+DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `user`;
+
+
 CREATE TABLE `categories` (
   `id` int NOT NULL,
   `tree_root` int DEFAULT NULL,
