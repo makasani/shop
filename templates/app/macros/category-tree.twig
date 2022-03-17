@@ -1,0 +1,37 @@
+{% macro list(trees, step = 0) %}
+    {% import _self as tree %}
+
+    {% for item in trees %}
+        <div class="sidebar-item pl-{{ step*10 }}">
+            <div class="sbitem-summary">
+                <a class="text-decoration-none h3 d-flex justify-content-between navbar-item"  href="{{ path('categoryById', {id: item.id} ) }}"> {{ item.name }}
+                    <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                    <i class="fa fa-fw fa-chevron-circle-right mt-1"></i>
+                </a>
+            </div>
+            <div class="sbitem-content sbitem-content_rolled">
+                {% if item.children %}
+                    {{ tree.list(item.children, step + 1) }}
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro listFooter(trees, step = 0) %}
+    {% import _self as tree %}
+
+    {% for item in trees %}
+        <div class="sidebar-item pl-{{ step*10 }} pt-2">
+            <div class="sbitem-summary">
+                <a class="text-decoration-none navbar-item"  href="{{ path('categoryById', {id: item.id} ) }}"> {{ item.name }}
+                </a>
+            </div>
+            <div class="sbitem-content sbitem-content_rolled">
+                {% if item.children %}
+                    {{ tree.listFooter(item.children, step + 1) }}
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endmacro %}

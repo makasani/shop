@@ -36,8 +36,41 @@ class CategoryController extends AbstractController
         // $sidebar = $this->sidebarNavigatorService->getNavbarCategory();
         $categories = $this->categoryRepository->findBy(['parent' => null]);
 
+        $trees = $this->listToTree($this->categoryRepository->findAll());
         return $this->render('app/category.html.twig', [
             'categories' => $categories,
+            'trees' => $trees,
+        ]);
+    }
+
+    private function listToTree($categories, $parent = null): array
+    {
+        $tree = [];
+        foreach ($categories as $category) {
+            if ($category->getParent() == $parent) {
+                $leaf = ['name' => $category->getTitle()];
+                $leaf['id'] = $category->getId();
+                // $leaf['rolled'] = true;
+                $leaf['children'] = $this->listToTree($categories, $category);
+                $tree[] = $leaf;
+            }
+        }
+        return $tree;
+    }
+
+    public function buildFooterSidebar(): Response
+    {
+        $trees = $this->listToTree($this->categoryRepository->findAll());
+        return $this->render('app/_embed/footer-categories.html.twig', [
+            'trees' => $trees,
+        ]);
+    }
+
+    public function buildSidebar(): Response
+    {
+        $trees = $this->listToTree($this->categoryRepository->findAll());
+        return $this->render('app/_embed/_categories_sidebar.html.twig', [
+            'trees' => $trees,
         ]);
     }
 
@@ -54,11 +87,12 @@ class CategoryController extends AbstractController
             $product->imagepath = $product->getProductImagePath($this->entityManager);
         }
 
-        dump($products);
+        $trees = $this->listToTree($this->categoryRepository->findAll());
 
         return $this->render('app/category.html.twig', [
             'categories' => $categories,
             'products' => $products,
+            'trees' => $trees,
         ]);
     }
 }

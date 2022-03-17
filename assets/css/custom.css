@@ -1,3 +1,37 @@
 /*
 Custom Css
 */
+.pl-10 {
+    padding-left: 10px;
+}
+.pl-20 {
+    padding-left: 20px;
+}
+.pl-30 {
+    padding-left: 10px;
+}
+.pl-40 {
+    padding-left: 20px;
+}
+.navbar-item {
+    color:#000;
+}
+.navbar-item:hover {
+    color: #69bb7e;
+}
+.navbar-item .fa-chevron-circle-right {
+    display: none;
+  }
+.navbar-item:hover .fa-chevron-circle-right {
+    display: block;
+}
+.navbar-item:hover .fa-chevron-circle-down {
+    display: none;
+}
+.sbitem-content_rolled {
+    display: none;
+}
+.sidebar-item:hover > .sbitem-content_rolled {
+    display: block;
+}
+  
