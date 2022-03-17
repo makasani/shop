@@ -1,0 +1,22 @@
+<div class="col-lg-3"></div>
+<div class="col-lg-9">
+    {% for crumb in crumbs %}
+        <a class="text-decoration-none navbar-item" 
+            {% if crumb.isLink %}
+                {% if crumb.id %}
+                    href="{{ path('categoryById', {'id': crumb.id}) }}" 
+                {% else %}
+                        href="{{ path('categoryRoot') }}" 
+                {% endif %}
+            {% endif %}
+       >{{ crumb.name }}
+            {% if crumb.child %}
+                <i class="fa fa-chevron-right"></i>
+            {% else %}
+                <i class="fa fa-chevron-down"></i> 
+            {% endif %}
+        </a>
+    {% endfor %}
+</div>
+
+ 

@@ -37,9 +37,11 @@ class CategoryController extends AbstractController
         $categories = $this->categoryRepository->findBy(['parent' => null]);
 
         $trees = $this->listToTree($this->categoryRepository->findAll());
+        $breadCrumbsPath = $this->buildBreadCrumbs(null, false);
         return $this->render('app/category.html.twig', [
             'categories' => $categories,
             'trees' => $trees,
+            'crumbs' => $breadCrumbsPath,
         ]);
     }
 
@@ -88,11 +90,44 @@ class CategoryController extends AbstractController
         }
 
         $trees = $this->listToTree($this->categoryRepository->findAll());
+        $breadCrumbsPath = $this->buildBreadCrumbs($id, false);
 
         return $this->render('app/category.html.twig', [
             'categories' => $categories,
             'products' => $products,
             'trees' => $trees,
+            'crumbs' => $breadCrumbsPath,
         ]);
+    }
+
+    public function buildBreadCrumbs(?int $parentCategoryId, bool $isLink = true): array
+    {
+        $categories = $this->categoryRepository->findAll();
+        if (is_null($parentCategoryId)) {
+            return [[
+                'id' => null,
+                'name' => 'Каталог',
+                'child' => null,
+                'isLink' => $isLink,
+            ]];
+        } else {
+            foreach ($categories as $category) {
+                if ($category->getId() == $parentCategoryId) {
+                    if (is_null($category->getParent())) {
+                        $parent = $this->buildBreadCrumbs(null);
+                    } else {
+                        $parent = $this->buildBreadCrumbs($category->getParent()->getId());
+                    }
+                    $parent[count($parent) - 1]['child'] = $parentCategoryId;
+                    $parent[] = [
+                        'id' => $parentCategoryId,
+                        'name' => $category->getTitle(),
+                        'child' => null,
+                        'isLink' => $isLink,
+                    ];
+                    return $parent;
+                }
+            }
+        }
     }
 }

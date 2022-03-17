@@ -13,6 +13,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
+    private CategoryController $categoryController;
+
+    public function __construct(CategoryController $categoryController)
+    {
+        $this->categoryController = $categoryController;
+    }
+
     /**
      * @Route("/", name="app_index")
      */
@@ -56,13 +63,14 @@ class MainController extends AbstractController
 
         //TODO Страшно, ну а что поделаешь... переделаю
         $product[0]->imagepath = $product[0]->getProductImagePath($entityManager);
-
+        $breadCrumbsPath = $this->categoryController->buildBreadCrumbs($product[0]->getCategory()->getId());
 
         if ($user === "anon.") {
             return $this->render('app/shop-single.html.twig', [
                 'product' => $product[0],
                 'category' => $category[0],
                 'productId' => $productId,
+                'crumbs' => $breadCrumbsPath,
             ]);
         }
 
