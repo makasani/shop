@@ -26,14 +26,15 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `categories`
 --
-
+SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `product_image`;
 DROP TABLE IF EXISTS `products_comments`;
-DROP TABLE IF EXISTS `order`;
 DROP TABLE IF EXISTS `product`;
+DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS `order_item`;
 DROP TABLE IF EXISTS `categories`;
 DROP TABLE IF EXISTS `user`;
-
+SET FOREIGN_KEY_CHECKS=1;
 
 CREATE TABLE `categories` (
   `id` int NOT NULL,
@@ -73,11 +74,22 @@ INSERT INTO `categories` (`id`, `tree_root`, `parent_id`, `title`, `created_at`,
 
 CREATE TABLE `order` (
   `id` int NOT NULL,
-  `user_id` int DEFAULT NULL,
-  `order_products_id` int DEFAULT NULL,
-  `status` int NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_item`
+--
+
+CREATE TABLE `order_item` (
+  `id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `order_ref_id` int NOT NULL,
+  `quantity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -229,9 +241,15 @@ ALTER TABLE `categories`
 -- Indexes for table `order`
 --
 ALTER TABLE `order`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `order_item`
+--
+ALTER TABLE `order_item`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_F5299398A76ED395` (`user_id`),
-  ADD KEY `IDX_F52993987738FE2F` (`order_products_id`);
+  ADD KEY `IDX_52EA1F094584665A` (`product_id`),
+  ADD KEY `IDX_52EA1F09E238517C` (`order_ref_id`);
 
 --
 -- Indexes for table `product`
@@ -279,6 +297,12 @@ ALTER TABLE `order`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
@@ -314,11 +338,11 @@ ALTER TABLE `categories`
   ADD CONSTRAINT `FK_3AF34668A977936C` FOREIGN KEY (`tree_root`) REFERENCES `categories` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `order`
+-- Constraints for table `order_item`
 --
-ALTER TABLE `order`
-  ADD CONSTRAINT `FK_F52993987738FE2F` FOREIGN KEY (`order_products_id`) REFERENCES `product` (`id`),
-  ADD CONSTRAINT `FK_F5299398A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `FK_52EA1F094584665A` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `FK_52EA1F09E238517C` FOREIGN KEY (`order_ref_id`) REFERENCES `order` (`id`);
 
 --
 -- Constraints for table `product`

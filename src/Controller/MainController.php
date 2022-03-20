@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Entity\ProductsComments;
 use App\Entity\User;
+use App\Form\AddToCartType;
+use App\Form\CartType;
 use App\Form\ProductsCommentsFormType;
+use App\Manager\CartManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,8 +57,25 @@ class MainController extends AbstractController
     /**
      * @Route("/product/{id}", name="app_product_show", methods={"GET", "POST"})
      */
-    public function productShow(EntityManagerInterface $entityManager, Request $request): Response
+    public function productShow(EntityManagerInterface $entityManager, Request $request, Product $product, CartManager $cartManager): Response
     {
+
+        $form = $this->createForm(AddToCartType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $item = $form->getData();
+            $item->setProduct($product);
+
+            $cart = $cartManager->getCurrentCart();
+            $cart
+                ->addItem($item)
+                ->setUpdatedAt(new \DateTime());
+
+            $cartManager->save($cart);
+
+            return $this->redirectToRoute('app_product_show', ['id' => $product->getId()]);
+        }
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $productId = $request->attributes->get('id');
@@ -71,6 +92,7 @@ class MainController extends AbstractController
                 'category' => $category[0],
                 'productId' => $productId,
                 'crumbs' => $breadCrumbsPath,
+                'form' => $form->createView(),
             ]);
         }
 
@@ -131,4 +153,5 @@ class MainController extends AbstractController
             'products' => $products,
         ]);
     }
+
 }
